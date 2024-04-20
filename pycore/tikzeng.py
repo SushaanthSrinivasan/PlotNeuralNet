@@ -57,6 +57,24 @@ def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", widt
     };
 """
 
+# Conv
+def to_ConvRelu( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
+    return r"""
+\pic[shift={"""+ offset +"""}] at """+ to +""" 
+    {RightBandedBox={
+        name=""" + name +""",
+        caption="""+ caption +r""",
+        xlabel={{"""+ str(n_filer) +""", }},
+        zlabel="""+ str(s_filer) +""",
+        fill=\ConvColor,
+        bandfill=\ConvReluColor,
+        height="""+ str(height) +""",
+        width="""+ str(width) +""",
+        depth="""+ str(depth) +"""
+        }
+    };
+"""
+
 # Conv,Conv,relu
 # Bottleneck
 def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)", width=(2,2), height=40, depth=40, caption=" " ):
@@ -178,11 +196,32 @@ def to_Sum( name, offset="(0,0,0)", to="(0,0,0)", radius=2.5, opacity=0.6):
     };
 """
 
-
-def to_connection( of, to):
+def to_Linear( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=10, caption=" " ):
     return r"""
-\draw [connection]  ("""+of+"""-east)    -- node {\midarrow} ("""+to+"""-west);
+\pic[shift={"""+ offset +"""}] at """+ to +""" 
+    {Box={
+        name=""" + name +""",
+        caption="""+ caption +r""",
+        xlabel={{"""+ str(n_filer) +""", }},
+        zlabel="""+ str(s_filer) +""",
+        fill=\FcColor,
+        height="""+ str(height) +""",
+        width="""+ str(width) +""",
+        depth="""+ str(depth) +"""
+        }
+    };
 """
+
+# def to_connection(of, to):
+#     return r"""
+# \draw [connection]  ("""+of+"""-east)    -- node {\midarrow} ("""+to+"""-west);
+# """
+
+def to_connection(of, to):
+    return r"""
+\draw [connection]  """ + of + """    -- node {\midarrow} """ + to + """;
+"""
+
 
 def to_skip( of, to, pos=1.25):
     return r"""
@@ -204,7 +243,7 @@ def to_end():
 def to_generate( arch, pathname="file.tex" ):
     with open(pathname, "w") as f: 
         for c in arch:
-            print(c)
+            # print(c)
             f.write( c )
      
 
