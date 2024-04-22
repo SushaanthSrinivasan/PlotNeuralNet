@@ -94,6 +94,29 @@ def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(
     };
 """
 
+def to_ConvNRelu( name, n=2, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=2, height=40, depth=40, caption=" " ):
+    xlabel_string = f'{n_filer},'*n
+    xlabel_string = xlabel_string[-1]
+    
+    width_string = f'{width},'*n
+    width_string = width_string[-1]
+
+    return r"""
+\pic[shift={ """+ offset +""" }] at """+ to +""" 
+    {RightBandedBox={
+        name="""+ name +""",
+        caption="""+ caption +""",
+        xlabel={{ """+ xlabel_string +""" }},
+        zlabel="""+ str(s_filer) +""",
+        fill=\ConvColor,
+        bandfill=\ConvReluColor,
+        height="""+ str(height) +""",
+        width={ """+ str(width[0]) +""" , """+ str(width[1]) +""" },
+        depth="""+ str(depth) +"""
+        }
+    };
+"""
+
 
 
 # Pool
